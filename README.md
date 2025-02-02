@@ -2,9 +2,9 @@
 
 # MoreServerLists Mod
 
-![Mod Version](https://img.shields.io/badge/Mod%20Version-1.0.1-brightgreen)
+![Mod Version](https://img.shields.io/badge/Mod%20Version-1.0.2-brightgreen)
 ![Minecraft Version](https://img.shields.io/badge/Minecraft%20Version-1.21.4-blue)
-![Fabric API Version](https://img.shields.io/badge/Fabric%20API-0.16.9-red)
+![Fabric Loader Version](https://img.shields.io/badge/Fabric%20Loader-0.16.10-red)
 
 Add as many server lists as you want with MoreServerLists! This Fabric mod allows you to expand your Minecraft server list and manage multiple server lists effortlessly.
 
