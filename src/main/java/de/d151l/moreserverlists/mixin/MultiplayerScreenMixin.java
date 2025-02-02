@@ -9,9 +9,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MultiplayerScreen.class)
@@ -28,7 +26,7 @@ public class MultiplayerScreenMixin extends Screen {
         super(title);
     }
 
-    @Inject(method = "init", at = @At("INVOKE"))
+    @Inject(method = "init", at = @At("TAIL"))
     private void init(CallbackInfo info) {
 
         final int screenWidth = this.width;
