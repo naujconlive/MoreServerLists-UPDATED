@@ -1,10 +1,10 @@
-### FORK WAS CREATED TO UPDATE THIS MOD TO 1.21.3/1.21.4, IT WILL BE DELETED ONCE AN OFFICIAL UPDATE COMES OUT
+### FORK WAS CREATED TO UPDATE THIS MOD TO 1.21.X, IT WILL BE DELETED ONCE AN OFFICIAL UPDATE COMES OUT
 
 # MoreServerLists Mod
 
-![Mod Version](https://img.shields.io/badge/Mod%20Version-1.0.2-brightgreen)
-![Minecraft Version](https://img.shields.io/badge/Minecraft%20Version-1.21.4-blue)
-![Fabric Loader Version](https://img.shields.io/badge/Fabric%20Loader-0.16.10-red)
+![Mod Version](https://img.shields.io/badge/Mod%20Version-1.0.3-brightgreen)
+![Minecraft Version](https://img.shields.io/badge/Minecraft%20Version-1.21.5-blue)
+![Fabric Loader Version](https://img.shields.io/badge/Fabric%20Loader-0.16.13-red)
 
 Add as many server lists as you want with MoreServerLists! This Fabric mod allows you to expand your Minecraft server list and manage multiple server lists effortlessly.
 
