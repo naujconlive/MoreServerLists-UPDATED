@@ -1,22 +1,21 @@
 package de.d151l.moreserverlists.screen;
 
 import de.d151l.moreserverlists.MoreServerListsModClient;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.TextWidget;
-import net.minecraft.text.Text;
-
 import java.util.concurrent.atomic.AtomicInteger;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
+import net.minecraft.network.chat.Component;
 
 public class ConfigScreen extends Screen {
 
     private final Screen parent;
 
     public ConfigScreen(final Screen parent) {
-        super(Text.of("MoreServerLists Config"));
+        super(Component.nullToEmpty("MoreServerLists Config"));
         this.parent = parent;
     }
 
@@ -26,54 +25,54 @@ public class ConfigScreen extends Screen {
         final int center = this.width / 2;
 
         MoreServerListsModClient.getInstance().getServerListHandler().getServerLists().forEach((key, name) -> {
-            final TextWidget textWidget = new TextWidget(center - 200, startHeight.get(), 200, 20, Text.of(key), this.textRenderer);
+            final StringWidget textWidget = new StringWidget(center - 200, startHeight.get(), 200, 20, Component.nullToEmpty(key), this.font);
 
-            final TextFieldWidget textFieldWidget = new TextFieldWidget(this.textRenderer, this.width / 2, startHeight.get(), 200, 20, Text.of(name));
+            final EditBox textFieldWidget = new EditBox(this.font, this.width / 2, startHeight.get(), 200, 20, Component.nullToEmpty(name));
             textFieldWidget.setMaxLength(24);
-            textFieldWidget.setText(name);
+            textFieldWidget.setValue(name);
 
             if (!key.equals("servers")) {
-                final ButtonWidget removeButton = ButtonWidget.builder(Text.of("Remove"), (buttonWidget) -> {
+                final Button removeButton = Button.builder(Component.nullToEmpty("Remove"), (buttonWidget) -> {
                     MoreServerListsModClient.getInstance().getServerListHandler().removeServerList(key);
-                    MinecraftClient.getInstance().setScreen(new ConfigScreen(parent));
-                }).width(50).position(textFieldWidget.getX() + textFieldWidget.getWidth() + 5, textFieldWidget.getY()).build();
-                this.addDrawableChild(removeButton);
+                    Minecraft.getInstance().setScreen(new ConfigScreen(parent));
+                }).width(50).pos(textFieldWidget.getX() + textFieldWidget.getWidth() + 5, textFieldWidget.getY()).build();
+                this.addRenderableWidget(removeButton);
             }
 
-            textFieldWidget.setChangedListener((string) -> {
+            textFieldWidget.setResponder((string) -> {
                 MoreServerListsModClient.getInstance().getServerListHandler().updateServerList(key, string);
             });
 
-            this.addDrawableChild(textWidget);
-            this.addDrawableChild(textFieldWidget);
+            this.addRenderableWidget(textWidget);
+            this.addRenderableWidget(textFieldWidget);
             startHeight.set(startHeight.get() + 25);
         });
 
 
         final int addServerListHeight = startHeight.get() + 50;
 
-        final TextFieldWidget addListKey = new TextFieldWidget(this.textRenderer, (this.width / 2) - 205, addServerListHeight, 200, 20, Text.of(""));
+        final EditBox addListKey = new EditBox(this.font, (this.width / 2) - 205, addServerListHeight, 200, 20, Component.nullToEmpty(""));
         addListKey.setMaxLength(8);
-        addListKey.setPlaceholder(Text.of("Key"));
+        addListKey.setHint(Component.nullToEmpty("Key"));
 
-        final TextFieldWidget addListName = new TextFieldWidget(this.textRenderer, (this.width / 2), addListKey.getY(), 200, 20, Text.of(""));
+        final EditBox addListName = new EditBox(this.font, (this.width / 2), addListKey.getY(), 200, 20, Component.nullToEmpty(""));
         addListName.setMaxLength(24);
-        addListName.setPlaceholder(Text.of("Name"));
+        addListName.setHint(Component.nullToEmpty("Name"));
 
-        final ButtonWidget addListButton = ButtonWidget.builder(Text.of("Add"), (buttonWidget) -> {
-            MoreServerListsModClient.getInstance().getServerListHandler().addServerList(addListKey.getText(), addListName.getText());
-            MinecraftClient.getInstance().setScreen(new ConfigScreen(parent));
-        }).width(50).position(addListName.getX() + addListName.getWidth() + 5, addListName.getY()).build();
+        final Button addListButton = Button.builder(Component.nullToEmpty("Add"), (buttonWidget) -> {
+            MoreServerListsModClient.getInstance().getServerListHandler().addServerList(addListKey.getValue(), addListName.getValue());
+            Minecraft.getInstance().setScreen(new ConfigScreen(parent));
+        }).width(50).pos(addListName.getX() + addListName.getWidth() + 5, addListName.getY()).build();
 
-        this.addDrawableChild(addListKey);
-        this.addDrawableChild(addListName);
-        this.addDrawableChild(addListButton);
+        this.addRenderableWidget(addListKey);
+        this.addRenderableWidget(addListName);
+        this.addRenderableWidget(addListButton);
 
-        final ButtonWidget doneButton = ButtonWidget.builder(Text.of("Save & Done"), (buttonWidget) -> {
+        final Button doneButton = Button.builder(Component.nullToEmpty("Save & Done"), (buttonWidget) -> {
             MoreServerListsModClient.getInstance().getServerListHandler().saveConfig();
-            MinecraftClient.getInstance().setScreen(new MultiplayerScreen(parent));
-        }).width(160).position(center - 80, this.height - 32).build();
+            Minecraft.getInstance().setScreen(new JoinMultiplayerScreen(parent));
+        }).width(160).pos(center - 80, this.height - 32).build();
 
-        this.addDrawableChild(doneButton);
+        this.addRenderableWidget(doneButton);
     }
 }

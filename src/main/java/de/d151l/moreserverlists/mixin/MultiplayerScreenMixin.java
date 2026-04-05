@@ -2,17 +2,17 @@ package de.d151l.moreserverlists.mixin;
 
 import de.d151l.moreserverlists.MoreServerListsModClient;
 import de.d151l.moreserverlists.screen.ConfigScreen;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
+import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(MultiplayerScreen.class)
+@Mixin(JoinMultiplayerScreen.class)
 public class MultiplayerScreenMixin extends Screen {
 
     private Screen parent;
@@ -22,7 +22,7 @@ public class MultiplayerScreenMixin extends Screen {
     private final int spaceBetweenListNameAndArrow = 3;
     private final int spaceBetweenWindowAndBar = 5;
 
-    protected MultiplayerScreenMixin(final Text title) {
+    protected MultiplayerScreenMixin(final Component title) {
         super(title);
     }
 
@@ -38,30 +38,30 @@ public class MultiplayerScreenMixin extends Screen {
 
         //int start = leftCenter - centerBar;
 
-        final ButtonWidget arrowLeft = ButtonWidget.builder(Text.of("«"), (buttonWidget) -> {
+        final Button arrowLeft = Button.builder(Component.nullToEmpty("«"), (buttonWidget) -> {
             MoreServerListsModClient.getInstance().getServerListHandler().previousServerList();
 
-            MinecraftClient.getInstance().setScreen(new MultiplayerScreen(parent));
-        }).width(this.arrowWidth).position(this.spaceBetweenWindowAndBar, this.spaceBetweenWindowAndBar).build();
+            Minecraft.getInstance().setScreen(new JoinMultiplayerScreen(parent));
+        }).width(this.arrowWidth).pos(this.spaceBetweenWindowAndBar, this.spaceBetweenWindowAndBar).build();
 
-        final ButtonWidget arrowRight = ButtonWidget.builder(Text.of("»"), (buttonWidget) -> {
+        final Button arrowRight = Button.builder(Component.nullToEmpty("»"), (buttonWidget) -> {
             MoreServerListsModClient.getInstance().getServerListHandler().nextServerList();
 
-            MinecraftClient.getInstance().setScreen(new MultiplayerScreen(parent));
-        }).width(this.arrowWidth).position(arrowLeft.getX() + arrowLeft.getWidth() + this.spaceBetweenListNameAndArrow, arrowLeft.getY()).build();
+            Minecraft.getInstance().setScreen(new JoinMultiplayerScreen(parent));
+        }).width(this.arrowWidth).pos(arrowLeft.getX() + arrowLeft.getWidth() + this.spaceBetweenListNameAndArrow, arrowLeft.getY()).build();
 
         final String currentServerListName = MoreServerListsModClient.getInstance().getServerListHandler().getCurrentServerListName();
         final int serverListIndex = MoreServerListsModClient.getInstance().getServerListHandler().getServerListIndex();
         final int maximumServerListIndex = MoreServerListsModClient.getInstance().getServerListHandler().getMaximumServerListIndex();
 
-        final ButtonWidget listName = ButtonWidget.builder(Text.of(currentServerListName + " (" + serverListIndex + "/" + maximumServerListIndex + ")"), (buttonWidget) -> {
+        final Button listName = Button.builder(Component.nullToEmpty(currentServerListName + " (" + serverListIndex + "/" + maximumServerListIndex + ")"), (buttonWidget) -> {
 
             final ConfigScreen configScreen = new ConfigScreen(parent);
-            MinecraftClient.getInstance().setScreen(configScreen);
-        }).width(this.listNameWidth).position(arrowRight.getX() + arrowRight.getWidth() + this.spaceBetweenListNameAndArrow, arrowRight.getY()).build();
+            Minecraft.getInstance().setScreen(configScreen);
+        }).width(this.listNameWidth).pos(arrowRight.getX() + arrowRight.getWidth() + this.spaceBetweenListNameAndArrow, arrowRight.getY()).build();
 
-        this.addDrawableChild(arrowLeft);
-        this.addDrawableChild(arrowRight);
-        this.addDrawableChild(listName);
+        this.addRenderableWidget(arrowLeft);
+        this.addRenderableWidget(arrowRight);
+        this.addRenderableWidget(listName);
     }
 }

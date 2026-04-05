@@ -1,8 +1,8 @@
 package de.d151l.moreserverlists.mixin;
 
 import de.d151l.moreserverlists.MoreServerListsModClient;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.ServerList;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ServerList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
@@ -10,12 +10,12 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(ServerList.class)
 public class ServerListMixin {
 
-    public ServerListMixin(final MinecraftClient client) {
+    public ServerListMixin(final Minecraft client) {
 
     }
 
     @ModifyConstant(
-            method = "loadFile",
+            method = "load",
             constant = @Constant(stringValue = "servers.dat")
     )
     private String loadFileReplaceServerDatFileName(String variable) {
@@ -23,7 +23,7 @@ public class ServerListMixin {
     }
 
     @ModifyConstant(
-            method = "saveFile",
+            method = "save",
             constant = @Constant(stringValue = "servers.dat_old")
     )
     private String saveFileReplaceServerDatOldFileName(String variable) {
@@ -31,7 +31,7 @@ public class ServerListMixin {
     }
 
     @ModifyConstant(
-            method = "saveFile",
+            method = "save",
             constant = @Constant(stringValue = "servers.dat")
     )
     private String saveFileReplaceServerDatFileName(String variable) {
